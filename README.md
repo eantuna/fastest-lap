@@ -146,6 +146,18 @@ sh ./src/scripts/linux/docker_compile.sh
 
 Read the latest fastest-lap [online documentation](http://fastest-lap.readthedocs.io/)
 
+### EA
+
+g++ -o f1_optimal_laptime -I/opt/fastest-lap/build/thirdparty/include -I/opt/fastest-lap/build/lion/build/lion/thirdparty/include -I/opt/fastest-lap -v f1_optimal_laptime.cpp -L/opt/fastest-lap/build/thirdparty/lib -lblas -llapack -ltinyxml2 -L/opt/fastest-lap/build/lib -lfastestlapc
+
+export LD_LIBRARY_PATH=/opt/fastest-lap/build/lib:/opt/fastest-lap/build/thirdparty/lib
+
+./f1_optimal_laptime /opt/fastest-lap/database/vehicles/f1/mercedes-2020-catalunya.xml
+./f1_optimal_laptime /opt/fastest-lap/database/vehicles/f1/mercedes-2020-catalunya.xml /opt/fastest-lap/database/tracks/catalunya/catalunya.xml
+
+docker build -t fastest-lap:0.0 .
+docker run -it --name fastest-lap-2 fastest-lap:0.0 bash
+
 ### References
 
 [1] [Tremlett, A. J., and D. J. N. Limebeer. "Optimal tyre usage for a formula one car." Vehicle System Dynamics 54.10 (2016): 1448-1473.][link1]<br/>
