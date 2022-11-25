@@ -43,19 +43,19 @@ int main(int argc, char *argv[]) {
   auto control_variables = Optimal_laptime<decltype(car)>::template Control_variables<>{};
 
   // steering wheel: optimize in the full mesh
-  control_variables[decltype(car)::Chassis_type::front_axle_type::ISTEERING]
-      = Optimal_laptime<decltype(car)>::create_full_mesh(std::vector<scalar>(n,ss.u[decltype(car)::Chassis_type::front_axle_type::ISTEERING]), 5.0e0);
+  control_variables[decltype(car)::Chassis_type::front_axle_type::control_names::STEERING]
+      = Optimal_laptime<decltype(car)>::create_full_mesh(std::vector<scalar>(n,ss.controls[decltype(car)::Chassis_type::front_axle_type::control_names::STEERING]), 50.0e0); 
 
   // throttle: optimize in the full mesh
-  control_variables[decltype(car)::Chassis_type::ITHROTTLE]
-      = Optimal_laptime<decltype(car)>::create_full_mesh(std::vector<scalar>(n,ss.u[decltype(car)::Chassis_type::ITHROTTLE]), 8.0e-4);
+  control_variables[decltype(car)::Chassis_type::control_names::THROTTLE]
+      = Optimal_laptime<decltype(car)>::create_full_mesh(std::vector<scalar>(n,ss.controls[decltype(car)::Chassis_type::control_names::THROTTLE]), 20.0*8.0e-4); 
 
   // brake bias: don't optimize
-  control_variables[decltype(car)::Chassis_type::IBRAKE_BIAS]
-      = Optimal_laptime<decltype(car)>::create_dont_optimize();
+  control_variables[decltype(car)::Chassis_type::control_names::BRAKE_BIAS]
+      = Optimal_laptime<decltype(car)>::create_dont_optimize(); 
 
   auto opts = Optimal_laptime<decltype(car)>::Options{};
-  Optimal_laptime opt_laptime(s, true, true, car, {n,ss.q}, {n,ss.qa}, control_variables, opts);
+  Optimal_laptime<decltype(car)> opt_laptime(s, true, true, car, {n,ss.input_states}, {n,ss.algebraic_states}, control_variables, opts);
   std::unique_ptr<Xml_document> doc = opt_laptime.xml();
   bool saved = doc -> save("output.xml");
 }
