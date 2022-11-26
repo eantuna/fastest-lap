@@ -156,7 +156,9 @@ export LD_LIBRARY_PATH=/opt/fastest-lap/build/lib:/opt/fastest-lap/build/thirdpa
 ./f1_optimal_laptime /opt/fastest-lap/database/vehicles/f1/mercedes-2020-catalunya.xml /opt/fastest-lap/database/tracks/catalunya/catalunya.xml
 
 docker build -t fastest-lap:0.0 .
+docker build -t fastest-lap:0.1 --no-cache .
 docker run -it --name fastest-lap-2 fastest-lap:0.0 bash
+docker run -it --name fastest-lap-3 fastest-lap:0.1 bash
 
 ### References
 
