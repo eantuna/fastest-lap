@@ -154,6 +154,8 @@ Read the latest fastest-lap [online documentation](http://fastest-lap.readthedoc
 
 g++ -o f1_optimal_laptime -I/opt/fastest-lap/build/thirdparty/include -I/opt/fastest-lap/build/lion/build/lion/thirdparty/include -I/opt/fastest-lap -v f1_optimal_laptime.cpp -L/opt/fastest-lap/build/thirdparty/lib -lblas -llapack -ltinyxml2 -L/opt/fastest-lap/build/lib -lfastestlapc
 
+g++ -o circuit_preprocessor -I/opt/fastest-lap/build/thirdparty/include -I/opt/fastest-lap/build/lion/build/lion/thirdparty/include -I/opt/fastest-lap -v circuit_preprocessor.cpp -L/opt/fastest-lap/build/thirdparty/lib -lblas -llapack -ltinyxml2 -L/opt/fastest-lap/build/lib -lfastestlapc
+
 export LD_LIBRARY_PATH=/opt/fastest-lap/build/lib:/opt/fastest-lap/build/thirdparty/lib
 
 ./f1_optimal_laptime /opt/fastest-lap/database/vehicles/f1/mercedes-2020-catalunya.xml
@@ -168,6 +170,7 @@ docker build -t fastest-lap:0.5 --no-cache .
 docker run -it --name fastest-lap-2 fastest-lap:0.0 bash
 docker run -it --name fastest-lap-3 fastest-lap:0.1 bash
 docker run -it --name fastest-lap-5 fastest-lap:0.5 bash
+docker run -it --name fastest-lap-5.1 fastest-lap:0.5.1 bash
 
 ### References
 
