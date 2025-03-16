@@ -1120,14 +1120,13 @@ inline auto Circuit_preprocessor::compute_averaged_centerline
         std::tie(r_left_equispaced[i],std::ignore,i_left) 
             = find_closest_point<scalar>(r_left,r_right_equispaced[i], closed, min(i_left[0],i_left[1]), options.maximum_distance_find);
 
+    // (EA) Debugging
     std::vector<scalar> s_right_equi(n_points);
     std::vector<scalar> s_left_equi(n_points);
-
     for (size_t i = 1; i < s_right_equi.size(); ++i) {
         s_right_equi[i] = s_right_equi[i-1] + norm(r_right_equispaced[i]-r_right_equispaced[i-1]);
         s_left_equi[i] = s_left_equi[i-1] + norm(r_left_equispaced[i]-r_left_equispaced[i-1]);
     }
-
     std::cout << "Right equispaced arclength = " << s_right_equi.back() << std::endl;
     std::cout << "Left equispaced arclength = " << s_left_equi.back() << std::endl;
 
@@ -1147,6 +1146,8 @@ inline auto Circuit_preprocessor::compute_averaged_centerline
 
     const scalar track_length_estimate = s_center.back();
 
+    std::cout << "Track length = " << track_length_estimate << std::endl;
+
     // (6) Transform the centerline to equally-spaced points
     std::vector<scalar> s_center_equispaced = linspace(0.0,s_center.back(),n_elements+1);
     Polynomial<sVector3d> r_center_polynomial(s_center, r_center, 1), n_right_polynomial(s_center, r_center_to_right, 1);
@@ -1162,7 +1163,7 @@ inline auto Circuit_preprocessor::compute_averaged_centerline
     if constexpr (closed)
         s_center_equispaced.pop_back();
 
-    return Centerline { .s = s_center_equispaced, .r_center = r_center_equispaced, .r_center_to_right = n_right_equispaced, .track_length = track_length_estimate, .r_right_equi = r_right_equispaced, .r_left_equi = r_left_equispaced };
+    return Centerline { .s = s_center_equispaced, .r_center = r_center_equispaced, .r_center_to_right = n_right_equispaced, .track_length = track_length_estimate };
 }
 
 
