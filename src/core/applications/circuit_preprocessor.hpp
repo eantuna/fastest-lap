@@ -1100,6 +1100,8 @@ inline auto Circuit_preprocessor::compute_averaged_centerline
     for (size_t i = 1; i < r_right.size(); ++i)
         s_right[i] = s_right[i-1] + norm(r_right[i]-r_right[i-1]);
 
+    std::cout << "Approx arclength = " << s_right.back() << std::endl;
+
     // (4) Project the right boundary into a set of nodes as close as possible to the ds_distribution
     std::vector<scalar> s_right_equispaced = linspace(0.0,s_right.back(),n_elements+1);
     if constexpr (closed)
@@ -1117,6 +1119,17 @@ inline auto Circuit_preprocessor::compute_averaged_centerline
     for (size_t i = 0; i < n_points; ++i)
         std::tie(r_left_equispaced[i],std::ignore,i_left) 
             = find_closest_point<scalar>(r_left,r_right_equispaced[i], closed, min(i_left[0],i_left[1]), options.maximum_distance_find);
+
+    std::vector<scalar> s_right_equi(n_points);
+    std::vector<scalar> s_left_equi(n_points);
+
+    for (size_t i = 1; i < s_right_equi.size(); ++i) {
+        s_right_equi[i] = s_right_equi[i-1] + norm(r_right_equispaced[i]-r_right_equispaced[i-1]);
+        s_left_equi[i] = s_left_equi[i-1] + norm(r_left_equispaced[i]-r_left_equispaced[i-1]);
+    }
+
+    std::cout << "Right equispaced arclength = " << s_right_equi.back() << std::endl;
+    std::cout << "Left equispaced arclength = " << s_left_equi.back() << std::endl;
 
     // (6) Compute the centerline estimation, and close it
     std::vector<sVector3d> r_center = 0.5*(r_left_equispaced + r_right_equispaced);
@@ -1149,7 +1162,7 @@ inline auto Circuit_preprocessor::compute_averaged_centerline
     if constexpr (closed)
         s_center_equispaced.pop_back();
 
-    return Centerline { .s = s_center_equispaced, .r_center = r_center_equispaced, .r_center_to_right = n_right_equispaced, .track_length = track_length_estimate };
+    return Centerline { .s = s_center_equispaced, .r_center = r_center_equispaced, .r_center_to_right = n_right_equispaced, .track_length = track_length_estimate, .r_right_equi = r_right_equispaced, .r_left_equi = r_left_equispaced };
 }
 
 
@@ -1625,6 +1638,47 @@ inline size_t Circuit_preprocessor::who_is_ahead(std::array<size_t,2>& i_p1, std
     }
     else 
         return ((i_p1.front() < i_p2.front()) ? 2 : 1); 
+}
+
+// EA 
+
+inline void Circuit_preprocessor::save_vector(const std::vector<sVector3d>& input_vector, const std::string& file_name)
+{
+    std::ofstream file(file_name);
+    file << "x,y,z\n";
+    for (size_t i = 0; i < input_vector.size(); i++) {
+        scalar x = input_vector[i].x();
+        scalar y = input_vector[i].y();
+        scalar z = input_vector[i].z();
+        file << x << "," << y << "," << z << "\n";
+    }
+    file.close();
+}
+
+inline std::vector<Circuit_preprocessor::Coordinates> Circuit_preprocessor::transform_vector(const std::vector<sVector3d>& input_vector)
+{
+    std::vector<Coordinates> transformed(input_vector.size());
+    for (size_t i = 0; i < input_vector.size(); i++) {
+        double longitude = (input_vector[i].x()/(R_earth * cos(roll_ref))) + yaw0;
+        double latitude = (-input_vector[i].y()/R_earth) + roll0;
+        double altitude = -input_vector[i].z();
+        transformed[i] = { longitude / DEG, latitude / DEG, altitude };
+    }
+    return transformed;
+}
+
+inline void Circuit_preprocessor::save_coordinates(const std::vector<Coordinates>& input_coordinates, const std::string& file_name)
+{
+
+    std::ofstream file(file_name);
+    file << "longitude,latitude,altitude\n";
+    for (size_t i = 0; i < input_coordinates.size(); i++) {
+        scalar x = input_coordinates[i].longitude;
+        scalar y = input_coordinates[i].latitude;
+        scalar z = input_coordinates[i].altitude;
+        file << std::fixed << std::setprecision(12) << x << "," << std::fixed << std::setprecision(12) << y << "," << std::fixed << std::setprecision(12) << z << "\n";
+    }
+    file.close();
 }
 
 #endif

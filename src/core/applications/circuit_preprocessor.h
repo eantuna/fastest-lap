@@ -88,7 +88,22 @@ class Circuit_preprocessor : public Circuit_geometry
         transform_coordinates<true>(coord_left, coord_right);
 
         // (3) Compute the centerline estimate
-        const auto [s_center,r_center,r_center_to_right,track_length_estimate] = compute_averaged_centerline<true>(r_left_measured,r_right_measured,n_elements,n_points,options);
+        const auto [s_center,r_center,r_center_to_right,track_length_estimate, r_right_equi, r_left_equi] = compute_averaged_centerline<true>(r_left_measured,r_right_measured,n_elements,n_points,options);
+
+        // EA
+
+        save_vector(r_center, "centerline.csv");
+        const std::vector<Coordinates> coords_center = transform_vector(r_center);
+        const std::vector<Coordinates> coords_left = transform_vector(r_left_measured);
+        const std::vector<Coordinates> coords_right = transform_vector(r_right_measured);
+        const std::vector<Coordinates> coords_right_equi = transform_vector(r_right_equi);
+        const std::vector<Coordinates> coords_left_equi = transform_vector(r_left_equi);
+        save_coordinates(coords_center, "centerline-coords.csv");
+        save_coordinates(coords_left, "left-coords.csv");
+        save_coordinates(coords_right, "right-coords.csv");
+        save_coordinates(coords_left_equi, "left-equi-coords.csv");
+        save_coordinates(coords_right_equi, "right-equi-coords.csv");
+        std::cout << "Track length = " << track_length_estimate << std::endl;
 
         // (3) Perform the optimization
         if (opts.with_elevation)
@@ -127,7 +142,7 @@ class Circuit_preprocessor : public Circuit_geometry
         }
 
         // (3) Compute the centerline estimate
-        const auto [s_center,r_center,r_center_to_right,track_length_estimate] = compute_averaged_centerline<true>(r_left_measured,r_right_measured,ds_breakpoints_v3d,options);
+        const auto [s_center,r_center,r_center_to_right,track_length_estimate, foo, bar] = compute_averaged_centerline<true>(r_left_measured,r_right_measured,ds_breakpoints_v3d,options);
 
         n_points   = s_center.size();
         n_elements = n_points;
@@ -161,7 +176,7 @@ class Circuit_preprocessor : public Circuit_geometry
         transform_coordinates<true>(coord_left, coord_right);
 
         // (2) Compute the centerline estimate
-        const auto [s_center,r_center,r_center_to_right,track_length_estimate] = compute_averaged_centerline<true>(r_left_measured,r_right_measured,s_distribution,ds_distribution,options);
+        const auto [s_center,r_center,r_center_to_right,track_length_estimate, foo, bar] = compute_averaged_centerline<true>(r_left_measured,r_right_measured,s_distribution,ds_distribution,options);
 
         n_points   = s_center.size();
         n_elements = n_points;
@@ -198,7 +213,7 @@ class Circuit_preprocessor : public Circuit_geometry
         transform_coordinates<false>(coord_left_trim, coord_right_trim);
 
         // (3) Compute the centerline estimate
-        const auto [s_center,r_center,r_center_to_right,track_length_estimate] = compute_averaged_centerline<false>(r_left_measured,r_right_measured,n_elements,n_points,options);
+        const auto [s_center,r_center,r_center_to_right,track_length_estimate, foo, bar] = compute_averaged_centerline<false>(r_left_measured,r_right_measured,n_elements,n_points,options);
 
         // (4) Perform the optimization
         if (opts.with_elevation)
@@ -373,6 +388,8 @@ class Circuit_preprocessor : public Circuit_geometry
         std::vector<sVector3d> r_center;
         std::vector<sVector3d> r_center_to_right;
         scalar track_length;
+        std::vector<sVector3d> r_right_equi;
+        std::vector<sVector3d> r_left_equi;
     };
 
     template<bool closed>
@@ -407,6 +424,11 @@ class Circuit_preprocessor : public Circuit_geometry
     static scalar compute_ds_for_coordinates(const sVector3d point, const std::vector<sVector3d>& r_curve, const std::vector<std::pair<sVector3d,scalar>>& ds_breakpoints);
 
     static size_t who_is_ahead(std::array<size_t,2>& i_p1, std::array<size_t,2>& i_p2, const sVector3d& p1, const sVector3d& p2, const sVector3d& p_ref);
+
+    void save_vector(const std::vector<sVector3d>& input_vector, const std::string& file_name);
+    std::vector<Coordinates> transform_vector(const std::vector<sVector3d>& input_vector);
+    void save_coordinates(const std::vector<Coordinates>& input_coordinates, const std::string& file_name);
+
 };
 
 #include "circuit_preprocessor.hpp"
