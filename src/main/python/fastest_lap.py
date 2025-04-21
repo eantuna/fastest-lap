@@ -7,6 +7,7 @@ import xml.etree.ElementTree as xml
 
 KMH=1.0/3.6;
 
+# libname="../../build/lib/libfastestlapc.so.0.5"
 libname="${libdir_python}/$<TARGET_FILE_NAME:fastestlapc>"
 c_lib = c.CDLL(libname)
 c_lib.download_scalar.restype       = c.c_double;
