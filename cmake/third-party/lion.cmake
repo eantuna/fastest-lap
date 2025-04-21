@@ -11,5 +11,8 @@ ExternalProject_Add(lion
     SOURCE_DIR "${THIRD_PARTY_DIR}/lion/source"
     BINARY_DIR "${THIRD_PARTY_DIR}/lion/build"
     INSTALL_DIR ${THIRD_PARTY_DIR}
+    PATCH_COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/../../cmake/third-party/custom_fixes/loggercpp.cmake
+        <SOURCE_DIR>/cmake/third-party/loggercpp.cmake
 )
 endif()
