@@ -173,6 +173,7 @@ docker run -it --name fastest-lap-5 fastest-lap:0.5 bash
 docker run -it --name fastest-lap-5.1 fastest-lap:0.5.1 bash
 docker run -it --name fastest-lap-5.2 -v $(PWD):/opt/fastest-lap/build/cli/data fastest-lap:0.5.2 bash
 docker run -it --name fastest-lap-5.2 -v $(PWD):/opt/fastest-lap/build/cli/data fastest-lap:0.5.2 ./f1_circuit_preprocessor data/miami-left.kml data/miami-right.kml data/miami-circuit.xml
+docker run -it --name fastest-lap-5.2 -v $(PWD):/opt/fastest-lap/build/cli/data fastest-lap:0.5.2 ./f1_circuit_preprocessor data/cota-left.kml data/cota-right.kml data/cota-circuit.xml
 
 ### References
 

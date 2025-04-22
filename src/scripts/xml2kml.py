@@ -2,8 +2,8 @@ from osgeo import ogr
 import xml.etree.ElementTree as ET
 import math
 
-input_xml = "/Users/edgardoantuna/Develop/F1/FastestLap/fastest-lap/data/fastest_laps/output_miami_ferrari_reindex.xml"
-output_kml = "/Users/edgardoantuna/Develop/F1/FastestLap/fastest-lap/data/kml/optimal-lap-ferrari-miami-reindex.kml"
+input_xml = "/Users/edgardoantuna/Develop/F1/FastestLap/fastest-lap/data/fastest_laps/optimal-lap-ferrari-cota1.xml"
+output_kml = "/Users/edgardoantuna/Develop/F1/FastestLap/fastest-lap/data/kml/optimal-lap-ferrari-cota1.kml"
 
 root = ET.parse(input_xml)
 
@@ -17,9 +17,9 @@ R_earth = 6378388
 DEG = math.pi / 180
 
 # To-Do: Get this from XML
-roll_ref = 25.959408497577201 * DEG
-yaw0 = -80.238088603535004* DEG
-roll0 = 25.959408497577201 * DEG
+roll_ref = 30.131846628744505 * DEG
+yaw0 = -97.639860495965706* DEG
+roll0 = 30.131846628744505 * DEG
 
 new_points = []
 for x, y in zip(x_pos, y_pos):
