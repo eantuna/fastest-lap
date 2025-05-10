@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
   std::string vehicle_path = "/opt/fastest-lap/database/vehicles/f1/limebeer-2014-f1.xml";
   if (argc > 1) {
     vehicle_path = argv[1];
-    std::cout << "Vehicle path -> " << vehicle_path << "\n";
+    std::cout << "Vehicle path -> " << vehicle_path << std::endl;
   }
 
   Xml_document database = { vehicle_path, true };
@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
   std::string track_path = "/opt/fastest-lap/database/tracks/catalunya_2022/catalunya_2022.xml";
   if (argc > 2) {
     track_path = argv[2];
-    std::cout << "Track path -> " << track_path << "\n";
+    std::cout << "Track path -> " << track_path << std::endl;
   }
 
   Xml_document catalunya_xml(track_path, true);
@@ -57,5 +57,11 @@ int main(int argc, char *argv[]) {
   auto opts = Optimal_laptime<decltype(car)>::Options{};
   Optimal_laptime<decltype(car)> opt_laptime(s, true, true, car, {n,ss.inputs}, control_variables, opts);
   std::unique_ptr<Xml_document> doc = opt_laptime.xml();
-  bool saved = doc -> save("output.xml");
+
+  std::string output_path = "output.xml";
+  if (argc > 3) {
+    output_path = argv[3];
+    std::cout << "Output path -> " << output_path << std::endl; 
+  }
+  bool saved = doc -> save(output_path);
 }
