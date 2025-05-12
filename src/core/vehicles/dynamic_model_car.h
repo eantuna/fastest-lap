@@ -3,6 +3,7 @@
 
 #include <map>
 #include <vector>
+#include <utility>  // for std::as_const
 #include "lion/foundation/types.h"
 #include "dynamic_model.h"
 
