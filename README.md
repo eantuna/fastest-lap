@@ -150,8 +150,9 @@ sh ./src/scripts/linux/docker_compile.sh
 
 Read the latest fastest-lap [online documentation](http://fastest-lap.readthedocs.io/)
 
-### EA
+### EA 
 
+```
 g++ -o f1_optimal_laptime -I/opt/fastest-lap/build/thirdparty/include -I/opt/fastest-lap/build/lion/build/lion/thirdparty/include -I/opt/fastest-lap -v f1_optimal_laptime.cpp -L/opt/fastest-lap/build/thirdparty/lib -lblas -llapack -ltinyxml2 -L/opt/fastest-lap/build/lib -lfastestlapc
 
 g++ -o circuit_preprocessor -I/opt/fastest-lap/build/thirdparty/include -I/opt/fastest-lap/build/lion/build/lion/thirdparty/include -I/opt/fastest-lap -v circuit_preprocessor.cpp -L/opt/fastest-lap/build/thirdparty/lib -lblas -llapack -ltinyxml2 -L/opt/fastest-lap/build/lib -lfastestlapc
@@ -164,6 +165,9 @@ export LD_LIBRARY_PATH=/opt/fastest-lap/build/lib:/opt/fastest-lap/build/thirdpa
 ./f1_optimal_laptime /opt/fastest-lap/database/vehicles/f1/redbull-2022-imola-wet.xml /opt/fastest-lap/database/tracks/catalunya_2022/catalunya_2022.xml
 ./f1_optimal_laptime /opt/fastest-lap/database/vehicles/f1/ferrari-2022-australia.xml /opt/fastest-lap/database/tracks/catalunya_2022/catalunya_2022.xml
 
+./build/bin/circuit_preprocessor database/tracks/mexico/mexico-left.kml database/tracks/mexico/mexico-right.kml database/tracks/mexico/mexico.xml
+./build/bin/f1_optimal_laptime database/vehicles/f1/ferrari-2022-australia.xml database/tracks/mexico/mexico.xml database/simulations/optimal-lap-ferrari-mexico.xml
+
 docker build -t fastest-lap:0.0 .
 docker build -t fastest-lap:0.1 --no-cache .
 docker build -t fastest-lap:0.5 --no-cache .
@@ -175,7 +179,7 @@ docker run -it --name fastest-lap-5.2 -v $(PWD):/opt/fastest-lap/build/cli/data 
 docker run -it --name fastest-lap-5.2 -v $(PWD):/opt/fastest-lap/build/cli/data fastest-lap:0.5.2 ./f1_circuit_preprocessor data/miami-left.kml data/miami-right.kml data/miami-circuit.xml
 docker run -it --name fastest-lap-5.2 -v $(PWD):/opt/fastest-lap/build/cli/data fastest-lap:0.5.2 ./f1_circuit_preprocessor data/cota-left.kml data/cota-right.kml data/cota-circuit.xml
 docker run --rm -v $PWD:/opt/fastest-lap/build/cli/data fastest-lap:0.5.2 ./f1_circuit_preprocessor data/las-vegas-left.kml data/las-vegas-right.kml data/las-vegas.xml
-
+```
 
 ### References
 

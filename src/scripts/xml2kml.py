@@ -2,8 +2,9 @@ from osgeo import ogr
 import xml.etree.ElementTree as ET
 import math
 
-input_xml = "/mnt/c/Users/antun/Develop/Apex/fastest-lap/database/simulations/optimal-lap-ferrari-las-vegas.xml"
-output_kml = "/mnt/c/Users/antun/Develop/Apex/fastest-lap/database/simulations/optimal-lap-ferrari-las-vegas.kml"
+input_xml = "/mnt/e/Develop/Apex/fastest-lap/database/simulations/optimal-lap-ferrari-mexico.xml"
+input_track = "/mnt/e/Develop/Apex/fastest-lap/database/tracks/mexico/mexico.xml"
+output_kml = "/mnt/e/Develop/Apex/fastest-lap/database/simulations/optimal-lap-ferrari-mexico.kml"
 
 root = ET.parse(input_xml)
 
@@ -16,10 +17,13 @@ y_pos = [float(item) for item in y_str.split(',')]
 R_earth = 6378388
 DEG = math.pi / 180
 
-# To-Do: Get this from XML
-roll_ref = 36.108264955698097 * DEG
-yaw0 = -115.16289039649 * DEG
-roll0 = 36.108264955698097 * DEG
+track_root = ET.parse(input_track)
+origin_longitude = float(track_root.find('.//origin_longitude').text)
+origin_latitude = float(track_root.find('.//origin_latitude').text)
+reference_latitude = float(track_root.find('.//reference_latitude').text)
+roll_ref =  reference_latitude * DEG
+yaw0 = origin_longitude * DEG
+roll0 = origin_latitude * DEG
 
 new_points = []
 for x, y in zip(x_pos, y_pos):
