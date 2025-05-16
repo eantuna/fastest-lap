@@ -15,7 +15,6 @@ int main(int argc, char *argv[]) {
 
   Xml_document database = { vehicle_path, true };
   limebeer2014f1<CppAD::AD<scalar>>::cartesian car_cartesian = { database };
-  limebeer2014f1<scalar>::cartesian car_cartesian_scalar = { database };
 
   std::string track_path = "/opt/fastest-lap/database/tracks/catalunya_2022/catalunya_2022.xml";
   if (argc > 2) {
@@ -36,8 +35,6 @@ int main(int argc, char *argv[]) {
 
   const auto& s = catalunya_pproc.s;
   const auto& n = s.size();
-
-  //EXPECT_EQ(n, 500);
 
   // Construct control variables
   auto control_variables = Optimal_laptime<decltype(car)>::template Control_variables_type<>{};
