@@ -166,7 +166,10 @@ export LD_LIBRARY_PATH=/opt/fastest-lap/build/lib:/opt/fastest-lap/build/thirdpa
 ./f1_optimal_laptime /opt/fastest-lap/database/vehicles/f1/ferrari-2022-australia.xml /opt/fastest-lap/database/tracks/catalunya_2022/catalunya_2022.xml
 
 ./build/bin/circuit_preprocessor database/tracks/mexico/mexico-left.kml database/tracks/mexico/mexico-right.kml database/tracks/mexico/mexico.xml
+./build/bin/circuit_preprocessor database/tracks/canada/canada-left.kml database/tracks/canada/canada-right.kml database/tracks/canada/canada.xml
 ./build/bin/f1_optimal_laptime database/vehicles/f1/ferrari-2022-australia.xml database/tracks/mexico/mexico.xml database/simulations/optimal-lap-ferrari-mexico.xml
+./build/bin/f1_optimal_laptime database/vehicles/f1/ferrari-2022-australia.xml database/tracks/imola/imola.xml database/simulations/optimal-lap-ferrari-imola.xml
+./build/bin/f1_optimal_laptime database/vehicles/f1/ferrari-2022-australia.xml database/tracks/canada/canada.xml database/simulations/optimal-lap-ferrari-canada.xml
 
 docker build -t fastest-lap:0.0 .
 docker build -t fastest-lap:0.1 --no-cache .
