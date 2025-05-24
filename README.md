@@ -150,7 +150,7 @@ sh ./src/scripts/linux/docker_compile.sh
 
 Read the latest fastest-lap [online documentation](http://fastest-lap.readthedocs.io/)
 
-### EA 
+### EA Notes
 
 ```
 g++ -o f1_optimal_laptime -I/opt/fastest-lap/build/thirdparty/include -I/opt/fastest-lap/build/lion/build/lion/thirdparty/include -I/opt/fastest-lap -v f1_optimal_laptime.cpp -L/opt/fastest-lap/build/thirdparty/lib -lblas -llapack -ltinyxml2 -L/opt/fastest-lap/build/lib -lfastestlapc
@@ -158,6 +158,9 @@ g++ -o f1_optimal_laptime -I/opt/fastest-lap/build/thirdparty/include -I/opt/fas
 g++ -o circuit_preprocessor -I/opt/fastest-lap/build/thirdparty/include -I/opt/fastest-lap/build/lion/build/lion/thirdparty/include -I/opt/fastest-lap -v circuit_preprocessor.cpp -L/opt/fastest-lap/build/thirdparty/lib -lblas -llapack -ltinyxml2 -L/opt/fastest-lap/build/lib -lfastestlapc
 
 export LD_LIBRARY_PATH=/opt/fastest-lap/build/lib:/opt/fastest-lap/build/thirdparty/lib
+
+cmake .. -DPYTHON_API_ABSOLUTE_PATH=off -DCMAKE_BUILD_TYPE=Debug
+cmake .. -DPYTHON_API_ABSOLUTE_PATH=off -DCMAKE_BUILD_TYPE=Release
 
 ./f1_optimal_laptime /opt/fastest-lap/database/vehicles/f1/mercedes-2020-catalunya.xml
 ./f1_optimal_laptime /opt/fastest-lap/database/vehicles/f1/mercedes-2020-catalunya.xml /opt/fastest-lap/database/tracks/catalunya/catalunya.xml
@@ -167,9 +170,12 @@ export LD_LIBRARY_PATH=/opt/fastest-lap/build/lib:/opt/fastest-lap/build/thirdpa
 
 ./build/bin/circuit_preprocessor database/tracks/mexico/mexico-left.kml database/tracks/mexico/mexico-right.kml database/tracks/mexico/mexico.xml
 ./build/bin/circuit_preprocessor database/tracks/canada/canada-left.kml database/tracks/canada/canada-right.kml database/tracks/canada/canada.xml
+./build/bin/circuit_preprocessor database/tracks/monaco/monaco-left.kml database/tracks/monaco/monaco-right.kml database/tracks/monaco/monaco.xml
+
 ./build/bin/f1_optimal_laptime database/vehicles/f1/ferrari-2022-australia.xml database/tracks/mexico/mexico.xml database/simulations/optimal-lap-ferrari-mexico.xml
 ./build/bin/f1_optimal_laptime database/vehicles/f1/ferrari-2022-australia.xml database/tracks/imola/imola.xml database/simulations/optimal-lap-ferrari-imola.xml
 ./build/bin/f1_optimal_laptime database/vehicles/f1/ferrari-2022-australia.xml database/tracks/canada/canada.xml database/simulations/optimal-lap-ferrari-canada.xml
+./build/bin/f1_optimal_laptime database/vehicles/f1/ferrari-2022-australia.xml database/tracks/monaco/monaco.xml database/simulations/optimal-lap-ferrari-monaco.xml
 
 docker build -t fastest-lap:0.0 .
 docker build -t fastest-lap:0.1 --no-cache .

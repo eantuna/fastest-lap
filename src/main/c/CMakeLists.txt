@@ -8,12 +8,13 @@ else()
     set(CONSTRUCT_LIBFASTESTLAPC ON)
 endif()
 
+option(USE_STATIC_STD_LIBS "Link statically against libstdc++ and libgcc" OFF)
 
 if ( ${CONSTRUCT_LIBFASTESTLAPC} )
     add_library(fastestlapc SHARED ./fastestlapc.cpp)
     
     set_target_properties(fastestlapc PROPERTIES 
-	CXX_VISIBILITY_PRESET hidden
+	    CXX_VISIBILITY_PRESET hidden
         VERSION ${PROJECT_VERSION}
         SOVERSION ${PROJECT_VERSION_MAJOR}
     )
@@ -25,7 +26,7 @@ if ( ${CONSTRUCT_LIBFASTESTLAPC} )
         RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
         )
     
-    if (NOT MSYS)
+    if (USE_STATIC_STD_LIBS)
     	if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     		set(LFASTESTLAPC_ADDITIONAL_FLAGS -static-libstdc++ -static-libgcc)
     	endif()
