@@ -3,7 +3,7 @@ from fastest_lap import KMH
 import csv
 import numpy as np
 import matplotlib.pyplot as plt
-print(plt.get_backend())
+# print(plt.get_backend())
 
 # Load vehicle
 vehicle = "car"
