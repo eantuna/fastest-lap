@@ -1576,8 +1576,10 @@ void Circuit_preprocessor::FG<closed, computation_type>::operator()(ADvector& fg
     
         // Equality constraints:  q^{i} = q^{i-1} + 0.5.ds.[dqds^{i} + dqds^{i-1}]
         // except for yaw, where q^{i} = q^{i-1} + 0.5.ds.[dqds^{i} + dqds^{i-1}] - 2.pi
+        // To-Do: For circuits that do not intersect
         for (size_t j = 0; j < state_names::end; ++j)
             fg[k++] = _q[0][j] - _q[_n_elements-1][j] - 0.5*ds*(_dqds[_n_elements-1][j] + _dqds[0][j]) + (j==state_names::yaw ? 2.0*pi*_direction : 0.0);
+            // fg[k++] = _q[0][j] - _q[_n_elements-1][j] - 0.5*ds*(_dqds[_n_elements-1][j] + _dqds[0][j]) + (j==state_names::yaw ? 0.0 : 0.0);
     }
 
     // (7) Add a last constraint: the first point should be in the start line

@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
   // options.eps_d = 1.0e-2;
   // options.maximum_yaw_dot = 1.0;
   // options.maximum_dyaw_dot = 1.0;
-  //options.print_level = 7;
+  options.print_level = 5;
 
   Circuit_preprocessor circuit(coord_left_kml, coord_right_kml, options, 700);
 
